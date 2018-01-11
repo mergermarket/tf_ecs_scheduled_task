@@ -2,7 +2,7 @@ resource "aws_cloudwatch_event_rule" "schedule" {
   name        = "${var.env}-${lookup(var.release, "component")}${var.name_suffix}-schedule"
   description = "Schedule ECS target"
 
-  schedule_expression = "${var.schedule_expression})"
+  schedule_expression = "${var.schedule_expression}"
 }
 
 data "aws_caller_identity" "current" {}
