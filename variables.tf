@@ -2,6 +2,10 @@ variable "env" {
   description = "Environment name"
 }
 
+variable "schedule_expression" {
+  description = "see https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html"
+}
+
 variable "platform_config" {
   description = "Platform configuration"
   type        = "map"
