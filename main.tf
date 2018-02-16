@@ -81,6 +81,8 @@ module "service_container_definition" {
   name  = "${lookup(var.release, "component")}${var.name_suffix}"
   image = "${lookup(var.release, "image_id")}"
 
+  memory = "${var.memory}"
+
   container_env = "${merge(
     map(
       "LOGSPOUT_CLOUDWATCHLOGS_LOG_GROUP_STDOUT", "${var.env}-${lookup(var.release, "component")}${var.name_suffix}-stdout",

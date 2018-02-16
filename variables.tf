@@ -6,6 +6,11 @@ variable "schedule_expression" {
   description = "see https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html"
 }
 
+variable "memory" {
+  description = "The memory limit for this container definition"
+  default     = "256"
+}
+
 variable "platform_config" {
   description = "Platform configuration"
   type        = "map"
