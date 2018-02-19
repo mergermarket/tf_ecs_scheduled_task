@@ -67,10 +67,14 @@ resource "aws_cloudwatch_event_target" "target" {
   }
 }
 
+locals {
+  ecs_family = "${var.env}-${lookup(var.release, "component")}${var.name_suffix}"  
+}
+
 module "taskdef" {
   source = "github.com/mergermarket/tf_ecs_task_definition_with_task_role"
 
-  family                = "${var.env}-${lookup(var.release, "component")}${var.name_suffix}"
+  family                = "${local.ecs_family}"
   container_definitions = ["${module.service_container_definition.rendered}"]
   policy                = "${var.task_role_policy}"
 }
@@ -92,7 +96,8 @@ module "service_container_definition" {
       "STATSD_ENABLED", "true",
       "ENV_NAME", "${var.env}",
       "COMPONENT_NAME",  "${lookup(var.release, "component")}",
-      "VERSION",  "${lookup(var.release, "version")}"
+      "VERSION",  "${lookup(var.release, "version")}",
+      "ECS_FAMILY", "${local.ecs_family}"
     ),
     var.common_application_environment,
     var.application_environment,
