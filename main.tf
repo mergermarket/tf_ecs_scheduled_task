@@ -7,9 +7,7 @@ resource "aws_cloudwatch_event_rule" "schedule" {
 
 data "aws_caller_identity" "current" {}
 
-data "aws_region" "current" {
-  current = true
-}
+data "aws_region" "current" { }
 
 resource "aws_iam_role_policy" "cloudwatch" {
   name = "run-ecs-task"
