@@ -7,7 +7,7 @@ resource "aws_cloudwatch_event_rule" "schedule" {
 
 data "aws_caller_identity" "current" {}
 
-data "aws_region" "current" { }
+data "aws_region" "current" {}
 
 resource "aws_iam_role_policy" "cloudwatch" {
   name = "run-ecs-task"
@@ -66,7 +66,7 @@ resource "aws_cloudwatch_event_target" "target" {
 }
 
 locals {
-  ecs_family = "${var.env}-${lookup(var.release, "component")}${var.name_suffix}"  
+  ecs_family = "${var.env}-${lookup(var.release, "component")}${var.name_suffix}"
 }
 
 module "taskdef" {
