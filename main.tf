@@ -16,20 +16,34 @@ resource "aws_iam_role_policy" "cloudwatch" {
   policy = <<EOF
 {
     "Version": "2012-10-17",
-    "Statement": [{
-        "Effect": "Allow",
-        "Action": [
-            "ecs:RunTask"
-        ],
-        "Resource": [
-            "${module.taskdef.arn}"
-        ],
-        "Condition": {
-            "ArnLike": {
-                "ecs:cluster": "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:cluster/default"
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecs:RunTask"
+            ],
+            "Resource": [
+                "${module.taskdef.arn}"
+            ],
+            "Condition": {
+                "ArnLike": {
+                    "ecs:cluster": "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:cluster/default"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iam:PassRole",
+            "Resource": [
+                "*"
+            ],
+            "Condition": {
+                "StringLike": {
+                    "iam:PassedToService": "ecs-tasks.amazonaws.com"
+                }
             }
         }
-    }]
+    ]
 }
 EOF
 }
