@@ -97,7 +97,9 @@ module "service_container_definition" {
   name  = "${lookup(var.release, "component")}${var.name_suffix}"
   image = "${lookup(var.release, "image_id")}"
 
-  memory = "${var.memory}"
+  cpu     = "${var.cpu}"
+  memory  = "${var.memory}"
+  command = "${var.command}"
 
   container_env = "${merge(
     map(

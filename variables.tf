@@ -6,9 +6,20 @@ variable "schedule_expression" {
   description = "see https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html"
 }
 
+variable "cpu" {
+  description = "The CPU limit for this container definition"
+  default     = "64"
+}
+
 variable "memory" {
   description = "The memory limit for this container definition"
   default     = "256"
+}
+
+variable "command" {
+  description = "The command that is passed to the container"
+  type        = "list"
+  default     = []
 }
 
 variable "platform_config" {
