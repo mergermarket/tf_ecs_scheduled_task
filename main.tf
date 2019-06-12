@@ -107,8 +107,8 @@ module "service_container_definition" {
       "STATSD_PORT", "8125",
       "STATSD_ENABLED", "true",
       "ENV_NAME", "${var.env}",
-      "COMPONENT_NAME",  "${lookup(var.release, "component")}",
-      "VERSION",  "${lookup(var.release, "version")}",
+      "COMPONENT_NAME", "${lookup(var.release, "component")}",
+      "VERSION", "${lookup(var.release, "version")}",
       "ECS_FAMILY", "${local.ecs_family}"
     ),
     var.common_application_environment,
@@ -117,11 +117,10 @@ module "service_container_definition" {
   )}"
 
   labels {
-    component          = "${lookup(var.release, "component")}"
-    env                = "${var.env}"
-    team               = "${lookup(var.release, "team")}"
-    version            = "${lookup(var.release, "version")}"
-    "logentries.token" = "${var.logentries_token}"
+    component = "${lookup(var.release, "component")}"
+    env       = "${var.env}"
+    team      = "${lookup(var.release, "team")}"
+    version   = "${lookup(var.release, "version")}"
   }
 }
 
