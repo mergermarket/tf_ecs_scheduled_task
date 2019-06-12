@@ -39,6 +39,16 @@ variable "secrets" {
   default     = {}
 }
 
+variable "application_secrets" {
+  type    = "list"
+  default = []
+}
+
+variable "platform_secrets" {
+  type    = "list"
+  default = []
+}
+
 variable "name_suffix" {
   description = "Set a suffix that will be applied to the name in order that a component can have multiple services per environment"
   type        = "string"

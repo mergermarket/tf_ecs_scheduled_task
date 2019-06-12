@@ -92,7 +92,7 @@ module "taskdef" {
 }
 
 module "service_container_definition" {
-  source = "github.com/mergermarket/tf_ecs_container_definition?ref=no-secrets"
+  source = "github.com/mergermarket/tf_ecs_container_definition"
 
   name  = "${lookup(var.release, "component")}${var.name_suffix}"
   image = "${lookup(var.release, "image_id")}"
@@ -100,6 +100,9 @@ module "service_container_definition" {
   cpu     = "${var.cpu}"
   memory  = "${var.memory}"
   command = "${var.command}"
+
+  application_secrets = "${var.application_secrets}"
+  platform_secrets    = "${var.platform_secrets}"
 
   container_env = "${merge(
     map(
