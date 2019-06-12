@@ -107,8 +107,8 @@ module "service_container_definition" {
       "STATSD_PORT", "8125",
       "STATSD_ENABLED", "true",
       "ENV_NAME", "${var.env}",
-      "COMPONENT_NAME",  "${lookup(var.release, "component")}",
-      "VERSION",  "${lookup(var.release, "version")}",
+      "COMPONENT_NAME", "${lookup(var.release, "component")}",
+      "VERSION", "${lookup(var.release, "version")}",
       "ECS_FAMILY", "${local.ecs_family}"
     ),
     var.common_application_environment,
@@ -117,11 +117,10 @@ module "service_container_definition" {
   )}"
 
   labels {
-    component          = "${lookup(var.release, "component")}"
-    env                = "${var.env}"
-    team               = "${lookup(var.release, "team")}"
-    version            = "${lookup(var.release, "version")}"
-    "logentries.token" = "${var.logentries_token}"
+    component = "${lookup(var.release, "component")}"
+    env       = "${var.env}"
+    team      = "${lookup(var.release, "team")}"
+    version   = "${lookup(var.release, "version")}"
   }
 }
 
@@ -133,4 +132,22 @@ resource "aws_cloudwatch_log_group" "stdout" {
 resource "aws_cloudwatch_log_group" "stderr" {
   name              = "${var.env}-${lookup(var.release, "component")}${var.name_suffix}-stderr"
   retention_in_days = "7"
+}
+
+resource "aws_cloudwatch_log_subscription_filter" "kinesis_log_stdout_stream" {
+  count           = "${var.platform_config["datadog_log_subscription_arn"] != "" ? 1 : 0}"
+  name            = "kinesis-log-stdout-stream-${local.service_name}"
+  destination_arn = "${var.platform_config["datadog_log_subscription_arn"]}"
+  log_group_name  = "${local.ecs_family}-stdout"
+  filter_pattern  = ""
+  depends_on      = ["aws_cloudwatch_log_group.stdout"]
+}
+
+resource "aws_cloudwatch_log_subscription_filter" "kinesis_log_stderr_stream" {
+  count           = "${var.platform_config["datadog_log_subscription_arn"] != "" ? 1 : 0}"
+  name            = "kinesis-log-stdout-stream-${local.service_name}"
+  destination_arn = "${var.platform_config["datadog_log_subscription_arn"]}"
+  log_group_name  = "${local.ecs_family}-stderr"
+  filter_pattern  = ""
+  depends_on      = ["aws_cloudwatch_log_group.stderr"]
 }
