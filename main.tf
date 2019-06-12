@@ -134,3 +134,21 @@ resource "aws_cloudwatch_log_group" "stderr" {
   name              = "${var.env}-${lookup(var.release, "component")}${var.name_suffix}-stderr"
   retention_in_days = "7"
 }
+
+resource "aws_cloudwatch_log_subscription_filter" "kinesis_log_stdout_stream" {
+  count           = "${var.platform_config["datadog_log_subscription_arn"] != "" ? 1 : 0}"
+  name            = "kinesis-log-stdout-stream-${local.service_name}"
+  destination_arn = "${var.platform_config["datadog_log_subscription_arn"]}"
+  log_group_name  = "${local.ecs_family}-stdout"
+  filter_pattern  = ""
+  depends_on      = ["aws_cloudwatch_log_group.stdout"]
+}
+
+resource "aws_cloudwatch_log_subscription_filter" "kinesis_log_stderr_stream" {
+  count           = "${var.platform_config["datadog_log_subscription_arn"] != "" ? 1 : 0}"
+  name            = "kinesis-log-stdout-stream-${local.service_name}"
+  destination_arn = "${var.platform_config["datadog_log_subscription_arn"]}"
+  log_group_name  = "${local.ecs_family}-stderr"
+  filter_pattern  = ""
+  depends_on      = ["aws_cloudwatch_log_group.stderr"]
+}
