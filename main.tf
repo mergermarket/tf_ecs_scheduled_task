@@ -89,6 +89,8 @@ module "taskdef" {
   family                = "${local.ecs_family}"
   container_definitions = ["${module.service_container_definition.rendered}"]
   policy                = "${var.task_role_policy}"
+  env                   = "${var.env}"
+  release               = "${var.release}"
 }
 
 module "service_container_definition" {
